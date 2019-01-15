@@ -59,8 +59,7 @@ class PrecipMSAD:
 
             # compute neighborhoods, attribute function, neighborhood function, and comp function for each data point
             for i, stid in enumerate(stids):
-                knn_i = precip_meso_knn(m, start, end, stid, k=k,
-                                        **kwargs).neighborhood.values  # neighborhood observations
+                knn_i = precip_meso_knn(m, start, end, stid, k=k, **kwargs).values  # neighborhood observations
                 neighbor_values[i] = np.median(knn_i)  # neighborhood function
                 attr_values[i] = self.attr_func(self.data.iloc[:, attr_ind][i])  # attribute function
                 self.comp_values[i] = self.comp_func(attr_values[i], neighbor_values[i])  # comp function
