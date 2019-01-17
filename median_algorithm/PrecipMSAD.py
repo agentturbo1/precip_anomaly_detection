@@ -1,5 +1,5 @@
 # SingleAttrDetect
-from typing import Callable
+from typing import Callable, Union
 
 import numpy as np
 from MesoPy import Meso
@@ -28,7 +28,7 @@ class PrecipMSAD:
 
     def fit(self, m: Meso, k: int = 5, attr_func: Callable[[float], float] = lambda x: x,
             comp_func: Callable[[float, float], float] = lambda f, g: f - g, spatial_ind: int = None,
-            stid_ind: [int, str] = 'index', attr_ind: int = 0, **kwargs) -> None:
+            stid_ind: Union[int, str] = 'index', attr_ind: int = 0, **kwargs) -> None:
         # temporary
         start = kwargs['start']
         end = kwargs['end']
@@ -76,11 +76,11 @@ class PrecipMSAD:
 
 if __name__ == '__main__':
     m = Meso(token='demotoken')
-    df = precip_dataframe(m, '201803010000', '201810140000', pmode='totals', radius='wbb,10', timeformat='%s')
+    df = precip_dataframe(m, '201803010000', '201810140000', pmode='totals', radius='dpg03,20', timeformat='%s')
 
     print(df)
 
     d = PrecipMSAD()
-    d.fit(m, k=8, start='201803010000', end='201810140000', pmode='totals', radius='wbb,10', timeformat='%s')
+    d.fit(m, k=8, start='201803010000', end='201810140000', pmode='totals', radius='dpg03,20', timeformat='%s')
 
     print(d.detect())

@@ -18,6 +18,7 @@ def precip_dataframe(m: Meso, start: str, end: str, **kwargs) -> pandas.DataFram
     do not have that large of a window as they are un representative of the situation. The filter uses last_report and
     first_report from the API dictionary to determine if it is valid. (Returning this invalid data may be implemented)
     '''
+    kwargs['timeformat'] = '%s'  # force timeformat
     df = json_normalize(m.precip(start=start, end=end, **kwargs)['STATION'])
 
     precip_col = np.full(df.shape[0], np.nan, dtype='float64')
@@ -47,6 +48,8 @@ def precip_dataframe(m: Meso, start: str, end: str, **kwargs) -> pandas.DataFram
     return df
 
 
+# TODO use metadata service to more quickly retrieve the nearest stations then retrieve data for the the k stations.
+# Should be faster
 def precip_meso_knn(m: Meso, start: str, end: str, stid: str, k: int = 5, **kwargs) -> pandas.DataFrame:
     '''
     Returns a pandas dataframe of the k nearest neighbor stations to the given 'stid' of the same observation using the
